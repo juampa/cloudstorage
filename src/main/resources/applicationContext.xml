@@ -6,30 +6,12 @@
 
 	
 	
- 	<!-- Define the Job Bean that will be executed. Our bean is named in the jobClass property. -->
-    <bean name="amazonUploadJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean ">
-        <property name="jobClass" value="com.logalty.cloudstorage.job.AmazonUploadJob"/>
-        <property name="durability" value="true"/>
-    </bean>
-
-     <!-- Associate the Job Bean with a Trigger. Triggers define when a job is executed. -->
-     <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
-         
-         <!-- see the example of method invoking job above -->
-         <property name="jobDetail" ref="amazonUploadJob"/>
-         <property name="startDelay" value="2000"/>
-         <property name="repeatInterval" value="10000"/>        
-         
-    </bean>
-
-    <!-- A list of Triggers to be scheduled and executed by Quartz -->
-    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-          <property name="triggers">
-              <list>
-                 <ref bean="simpleTrigger"/>
-               </list>
-          </property>
-    </bean>
-
+	<bean id="amazonUploader" class="com.logalty.cloudstorage.uploader.AmazonUploader"/>
+	
+	
+	<bean id="example" class="com.logalty.cloudstorage.service.MainFileService">
+		<property name="uploader" ref="amazonUploader"/>
+		<property name="fileIn" value="D:\\pruebas\\nube\\indice.txt"/>
+	</bean>
 
 </beans>
